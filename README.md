@@ -26,9 +26,16 @@ Kredi kartı işlemlerinde dolandırıcılık tespiti yapan bir makine öğrenme
 
 | Model | PR-AUC | Precision (fraud) | Recall (fraud) | F1 (fraud) | Threshold |
 |---|---|---|---|---|---|
-| _TODO_ | _TODO_ | _TODO_ | _TODO_ | _TODO_ | _TODO_ |
+| Random Forest | 0.873 | 0.910 | 0.818 | 0.862 | 0.240 |
 
-<!-- Notebook'u çalıştırdıktan sonra 7. bölümdeki değerlerle doldurun. -->
+### Model karşılaştırması (validation, threshold = 0.5)
+
+| Model | Precision (fraud) | Recall (fraud) | F1 (fraud) | Yanlış alarm (FP) | Kaçırılan fraud (FN) |
+|---|---|---|---|---|---|
+| Logistic Regression | 0.063 | 0.888 | 0.117 | 1304 | 11 |
+| Random Forest | 0.932 | 0.694 | 0.795 | 5 | 30 |
+
+Logistic Regression fraud'ların çoğunu yakalıyor ama 1.300'den fazla yanlış alarm üretiyor. Random Forest çok daha isabetli ama varsayılan 0.5 threshold'da fraud'ların yaklaşık %30'unu kaçırıyor. Threshold validation setinde 0.24'e indirilince test setinde recall 0.818'e, F1 0.862'ye çıkıyor.
 
 ## Proje yapısı
 
@@ -83,8 +90,6 @@ Yanıt:
 ```
 
 `GET /health` endpoint'i modelin adını ve kullanılan threshold'u döndürür.
-
-## Notlar ve sınırlamalar
 
 - `Hour` gerçek saat değil. Veri seti ~2 günü kapsıyor ve başlangıç saati bilinmiyor.
 - Threshold F1'e göre seçiliyor. Gerçek bir sistemde bu seçim, kaçırılan fraud ile yanlış alarmın iş maliyetine göre yapılmalı.
